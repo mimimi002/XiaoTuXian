@@ -3,6 +3,7 @@ import { getTopCategoryAPI } from '@/apis/category'
 import { getBannerAPI } from '@/apis/home'
 import { onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
+import GoodsItem from '../Home/components/GoodItems.vue'
 
 const categoryData = ref({})
 const route = useRoute()
@@ -36,12 +37,33 @@ onMounted(() => {
         </el-breadcrumb>
       </div>
     </div>
+    <!-- 轮播图 -->
     <div class="home-banner">
       <el-carousel height="500px">
         <el-carousel-item v-for="item in bannerList" :key="item.id">
           <img :src="item.imgUrl" alt="">
         </el-carousel-item>
       </el-carousel>
+    </div>
+    <!-- 分类列表 -->
+    <div class="sub-list">
+      <h3>全部分类</h3>
+      <ul>
+        <li v-for="item in categoryData.children" :key="item.id">
+          <RouterLink to="/">
+            <img :src="item.picture" />
+            <p>{{ item.name }}</p>
+          </RouterLink>
+        </li>
+      </ul>
+    </div>
+    <div class="ref-goods" v-for="item in categoryData.children" :key="item.id">
+      <div class="head">
+        <h3>- {{ item.name }}-</h3>
+      </div>
+      <div class="body">
+        <GoodsItem v-for="good in item.goods" :key="good.id" :goods="good" />
+      </div>
     </div>
   </div>
 </template>
